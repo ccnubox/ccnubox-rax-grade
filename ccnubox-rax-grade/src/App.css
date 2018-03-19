@@ -2,25 +2,28 @@
   flex: 1;
   justify-content: center;
   align-items: center;
+  font-size: 16px;
+  background-color: #efeff4;
 }
 
-.appHeader {
-  background-color: #222;
-  height: 160;
-  padding: 40;
-}
-
-.appBanner, .appIntro {
+.choose_box {
+  display: block;
+  line-height: 100;
   text-align: center;
+  width: 550;
+  height: 100;
+  border-radius: 10;
+  background-color: #fff;
 }
-
-.appBanner {
-  font-size: 80;
-  color: white;
+.top_box {
+  margin-top: 320;
+  color: #434343;
 }
-
-.appIntro {
-  margin-top: 40;
-  font-size: 40;
-  line-height: 60;
+.middle_box {
+  margin-top: 50;
+  color: #434343;
+}
+.bottom_box {
+  color: #ffffff;
+  background-color: #6767fa;
 }

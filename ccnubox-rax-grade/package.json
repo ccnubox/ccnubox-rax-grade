@@ -16,8 +16,8 @@
     "rax-view": "^0.5.4"
   },
   "devDependencies": {
-    "rax-scripts": "^0.5.4",
     "babel-eslint": "^7.1.0",
-    "eslint": "^3.10.0"
+    "eslint": "^3.10.0",
+    "rax-scripts": "^0.5.4"
   }
 }

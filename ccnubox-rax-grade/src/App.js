@@ -24,15 +24,17 @@ class Dropdown extends Component {
   };
 
   static defaultProps = {
-    visible: false
+    visible: false,
+    options: null
   };
 
   state = {
-    visible: false
+    visible: false,
+    options: null
   };
 
   animated(state, callback) {
-    const { visible } = state;
+    const { visible, options } = state;
     Animated.timing(this.fadeAnim, { toValue: visible === true ? 1 : 0 }).start(
       callback
     );
@@ -77,7 +79,8 @@ class Dropdown extends Component {
 
   componentWillMount() {
     this.setState({
-      visible: this.props.visible
+      visible: this.props.visible,
+      options: this.props.options
     });
   }
 
@@ -87,7 +90,7 @@ class Dropdown extends Component {
 
   render() {
     const { contentStyle, children } = this.props;
-    const { visible } = this.state;
+    const { visible,options } = this.state;
     return (
       visible && (
         <AnimatedView
@@ -96,9 +99,7 @@ class Dropdown extends Component {
           }}
           style={[{ opacity: this.fadeAnim }]}
         >
-          <Touchable
-            style={[styles.main, contentStyle]}
-          >
+          <Touchable>
             {children}
           </Touchable>
         </AnimatedView>
@@ -110,7 +111,8 @@ class Dropdown extends Component {
 class Year extends Component {
   constructor(props) {
     super(props);
-    this.xnm = 2015;
+    this.year = this.id;
+    this.xnm = 2016;
   }
   showModal = () => {
     this.refs.modal.show();
@@ -127,9 +129,10 @@ class Year extends Component {
           <Text>{this.xnm}学年</Text>
         </Touchable>
         <Dropdown ref="modal">
-          <View>
+          <View style={styles.dropdown}>
+          <div style={styles.dropTriangle}></div>
             <Touchable onPress={this.hideModal}>
-              <Text>{this.xnm + 1}学年</Text>
+              <Text>{this.xnm} - {this.xnm + 1}学年</Text>
             </Touchable>
             <Touchable onPress={this.hideModal}>
               <Text>{this.xnm + 2}学年</Text>
@@ -147,20 +150,21 @@ class Year extends Component {
 class Term extends Component {
   constructor(props) {
     super(props);
-    this.xqm = [
+      this.chooseTerm = {term:1, termText: "第一学期"},
+    this.TermOptions = [
       {
         value: 1,
-        text: "一"
+        text: "第一学期"
       },
       {
         value: 2,
-        text: "二"
+        text: "第二学期"
       },
       {
         value: 3,
-        text: "三"
+        text: "第三学期"
       }
-    ];
+    ]
   }
   showModal = () => {
     this.refs.modal.show();
@@ -174,18 +178,18 @@ class Term extends Component {
     return (
       <View style={[styles.choose_box, styles.middle_box]}>
         <Touchable onPress={this.showModal}>
-          <Text>第学期</Text>
+          <Text>{this.chooseTerm.termText}</Text>
         </Touchable>
         <Dropdown ref="modal">
-          <View>
+          <View style={styles.dropdown}>
             <Touchable onPress={this.hideModal}>
-              <Text>第{this.xqm[0].text}学期</Text>
+              <Text>{this.TermOptions[0].text}</Text>
             </Touchable>
             <Touchable onPress={this.hideModal}>
-              <Text>第{this.xqm[1].text}学期</Text>
+              <Text>{this.TermOptions[1].text}</Text>
             </Touchable>
             <Touchable onPress={this.hideModal}>
-              <Text>第{this.xqm[2].text}学期</Text>
+              <Text>{this.TermOptions[2].text}</Text>
             </Touchable>
           </View>
         </Dropdown>
@@ -205,7 +209,7 @@ class App extends Component {
         <Year></Year>
         <Term></Term>
         <Touchable>
-          <Text style={[styles.choose_box, styles.middle_box,styles.bottom_box]}>查询</Text>
+          <Text style={[styles.choose_box, styles.bottom_box]}>查询</Text>
         </Touchable>
       </View>
     );

@@ -13,17 +13,51 @@
   width: 550;
   height: 100;
   border-radius: 10;
+}
+
+.top_box {
+  padding: 34 40;
+  color: #434343;
+}
+
+.middle_box {
+  padding: 34 40;
+  color: #434343;
+}
+
+.top_box, .middle_box {
   background-color: #fff;
 }
-.top_box {
-  margin-top: 320;
-  color: #434343;
-}
-.middle_box {
-  margin-top: 50;
-  color: #434343;
-}
+
 .bottom_box {
   color: #ffffff;
   background-color: #6767fa;
+}
+
+.middle_box, .bottom_box{
+  margin-top: 50;
+}
+
+.triangle {
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-top: 40px solid #000;
+  width: 0;
+  height: 0;
+  display: inline-block;
+}
+
+.dropdown {
+  flex: 1;
+  justify-content: center;
+  align-items: center;
+}
+
+.dropTriangle{
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-top: 40px solid #000;
+  width: 0;
+  height: 0;
+  margin-top: 22px;
 }

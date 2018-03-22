@@ -1,11 +1,14 @@
 import { createElement, Component, PropTypes } from "rax";
 import View from "rax-view";
 import Text from "rax-text";
-import styles from "./App.css"
+import styles from "./App.css";
 import Touchable from "rax-touchable";
 import ListView from "rax-listview";
 import GradeService from "./services";
 import Animated from "rax-animated";
+//import BoxButton from "../box-ui/common/button";
+import Button from "rax-button";
+import Link from 'rax-link';
 
 const id = 2016210773;
 
@@ -90,7 +93,7 @@ class Dropdown extends Component {
 
   render() {
     const { contentStyle, children } = this.props;
-    const { visible,options } = this.state;
+    const { visible, options } = this.state;
     return (
       visible && (
         <AnimatedView
@@ -99,9 +102,7 @@ class Dropdown extends Component {
           }}
           style={[{ opacity: this.fadeAnim }]}
         >
-          <Touchable>
-            {children}
-          </Touchable>
+          <Touchable>{children}</Touchable>
         </AnimatedView>
       )
     );
@@ -130,9 +131,11 @@ class Year extends Component {
         </Touchable>
         <Dropdown ref="modal">
           <View style={styles.dropdown}>
-          <div style={styles.dropTriangle}></div>
+            <div style={styles.dropTriangle} />
             <Touchable onPress={this.hideModal}>
-              <Text>{this.xnm} - {this.xnm + 1}学年</Text>
+              <Text>
+                {this.xnm} - {this.xnm + 1}学年
+              </Text>
             </Touchable>
             <Touchable onPress={this.hideModal}>
               <Text>{this.xnm + 2}学年</Text>
@@ -150,21 +153,21 @@ class Year extends Component {
 class Term extends Component {
   constructor(props) {
     super(props);
-      this.chooseTerm = {term:1, termText: "第一学期"},
-    this.TermOptions = [
-      {
-        value: 1,
-        text: "第一学期"
-      },
-      {
-        value: 2,
-        text: "第二学期"
-      },
-      {
-        value: 3,
-        text: "第三学期"
-      }
-    ]
+    this.chooseTerm = { term: 1, termText: "第一学期" }),
+   this.TermOptions = [
+        {
+          value: 1,
+          text: "第一学期"
+        },
+        {
+          value: 2,
+          text: "第二学期"
+        },
+        {
+          value: 3,
+          text: "第三学期"
+        }
+      ];
   }
   showModal = () => {
     this.refs.modal.show();
@@ -206,11 +209,16 @@ class App extends Component {
   render() {
     return (
       <View style={styles.app}>
-        <Year></Year>
-        <Term></Term>
-        <Touchable>
-          <Text style={[styles.choose_box, styles.bottom_box]}>查询</Text>
-        </Touchable>
+        <Year />
+        <Term />
+        <Button
+          onPress={evt => {
+            window.location = "/gradeList";
+          }}
+          style={[styles.choose_box, styles.bottom_box]}
+        >
+          <Link href=""style={styles.whiteText}>查询</Link>
+        </Button>
       </View>
     );
   }

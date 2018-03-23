@@ -4,7 +4,7 @@ import Text from "rax-text";
 import styles from "./App.css";
 import Touchable from "rax-touchable";
 import ListView from "rax-listview";
-import GradeService from "./services";
+import GradeService from "./services/grade";
 import Animated from "rax-animated";
 //import BoxButton from "../box-ui/common/button";
 import Button from "rax-button";
@@ -153,7 +153,7 @@ class Year extends Component {
 class Term extends Component {
   constructor(props) {
     super(props);
-    this.chooseTerm = { term: 1, termText: "第一学期" }),
+    this.chooseTerm = { term: 1, termText: "第一学期" };
    this.TermOptions = [
         {
           value: 1,
@@ -213,11 +213,11 @@ class App extends Component {
         <Term />
         <Button
           onPress={evt => {
-            window.location = "/gradeList";
+            // 处理数据
           }}
           style={[styles.choose_box, styles.bottom_box]}
         >
-          <Link href=""style={styles.whiteText}>查询</Link>
+          <Link href="http://10.193.237.131:9999/js/result.bundle.js?_wx_tpl=http://10.193.237.131:9999/js/result.bundle.js" style={styles.whiteText}>查询</Link>
         </Button>
       </View>
     );

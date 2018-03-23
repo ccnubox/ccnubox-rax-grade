@@ -3,7 +3,7 @@ import View from 'rax-view';
 import Text from 'rax-text';
 import ListView from 'rax-listview';
 import styles from "./App.css";
-import GradeService from "./services";
+import GradeService from "./services/grade.js";
 import Button from "rax-button";
 
 // 绩点
@@ -77,24 +77,18 @@ class Result extends Component {
     return (
       <View style={styles.item}>
        <View style={styles.row}>
-          <Text style={[styles.category]}>{item.kcxzmc}</Text>
-          <Text style={[styles.type]}>{item.type}</Text>
-          <Text style={[styles.credit]}>{item.credict}</Text>
-          <Button onPress={this.handlePress}>
-            <Text style={[styles.whiteText, styles.middleFont]}>详细</Text>
-          </Button>
+          <Text style={[styles.category,styles.verticalBtn]}>{item.kcxzmc}</Text>
+          <Text style={[styles.type,styles.verticalBtn]}>{item.type}</Text>
+          <Text style={[styles.credit,styles.verticalBtn]}>学分{item.credict}</Text>
         </View>
         <View style={[styles.row]}>
-        <Text style={[styles.course]}>{item.course}</Text>
-        <Text style={[styles.grade]}>成绩{item.grade}</Text>
+          <Text style={[styles.course,styles.verticalBtn]}>{item.course}</Text>
+          <Text style={[styles.grade,styles.verticalBtn]}>成绩{item.grade}</Text>
         </View>
         <View style={[styles.row]}>
-            <Text>
-              {textLog1}
-            </Text>
-            <Text style={[styles.detailGrade, styles.uausl]}>平时分：{item.usual}</Text>
-            <Text style={[styles.detailGrade, styles.ending]}>期末分：{item.ending}</Text>
-            <Text style={[styles.detailGrade, styles.gpa]}>绩点：</Text>
+            <Text style={[styles.detailGrade, styles.uausl,styles.verticalBtn]}>平时分：{item.usual}</Text>
+            <Text style={[styles.detailGrade, styles.ending,styles.verticalBtn]}>期末分：{item.ending}</Text>
+            <Text style={[styles.detailGrade, styles.gpa,styles.verticalBtn]}>绩点：4.0</Text>
         </View>
       </View>
     );

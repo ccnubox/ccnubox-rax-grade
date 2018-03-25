@@ -128,10 +128,11 @@ class Year extends Component {
       <View style={[styles.choose_box, styles.top_box]}>
         <Touchable onPress={this.showModal}>
           <Text>{this.xnm}学年</Text>
+          <div style={[styles.triangle]} />
         </Touchable>
         <Dropdown ref="modal">
           <View style={styles.dropdown}>
-            <div style={styles.dropTriangle} />
+            <div style={styles.drop_triangle} />
             <Touchable onPress={this.hideModal}>
               <Text>
                 {this.xnm} - {this.xnm + 1}学年
@@ -156,15 +157,15 @@ class Term extends Component {
     this.chooseTerm = { term: 1, termText: "第一学期" };
    this.TermOptions = [
         {
-          value: 1,
+          value: 3,
           text: "第一学期"
         },
         {
-          value: 2,
+          value: 12,
           text: "第二学期"
         },
         {
-          value: 3,
+          value: 16,
           text: "第三学期"
         }
       ];
@@ -217,7 +218,7 @@ class App extends Component {
           }}
           style={[styles.choose_box, styles.bottom_box]}
         >
-          <Link href="http://10.193.237.131:9999/js/result.bundle.js?_wx_tpl=http://10.193.237.131:9999/js/result.bundle.js" style={styles.whiteText}>查询</Link>
+          <Link href="http://10.193.237.131:9999/js/second.bundle.js?_wx_tpl=http://10.193.237.131:9999/js/second.bundle.js" style={styles.white_text}>查询</Link>
         </Button>
       </View>
     );

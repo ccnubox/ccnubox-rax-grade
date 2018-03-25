@@ -2,106 +2,159 @@ import {createElement, Component, render} from 'rax';
 import View from 'rax-view';
 import Text from 'rax-text';
 import ListView from 'rax-listview';
-import styles from "./App.css";
+import styles from "./result.css";
 import GradeService from "./services/grade.js";
 import Button from "rax-button";
 
-// 绩点
-// const gpa = {
-  
-// }
-const gradeData = [
-  {
-      "course": "生理与健康",  // 课程
-      "credit": "1.0",  // 学分
-      "grade" : "88.0",   // 总评
-      "category": "通识选修课", // 课程类别
-      "type": "理", // 课程分类
-      "jxb_id": "1", // 一个奇怪的id, 用于该课程成绩详情API查询
-      "kcxzmc": "通识选修课", // 课程属性
-      "ending": "86", // 期末成绩
-      "usual": "90" // 平时成绩
-  },
-  {
-    "course": "高等数学",  // 课程
-    "credit": "6.0",  // 学分
-    "grade" : "100",   // 总评
-    "category": "专业必修课", // 课程类别
-    "type": "理", // 课程分类
-    "jxb_id": "1", 
-    "kcxzmc": "专业必修课",
-    "ending": "100",
-    "usual": "100"
-  },
-  {
-    "course": "高级语言程序设计",  // 课程
-    "credit": "3.0",  // 学分
-    "grade" : "81.0",   // 总评
-    "category": "专业必修课", // 课程类别
-    "type": "理", // 课程分类
-    "jxb_id": "1",
-    "kcxzmc": "专业必修课",
-    "ending": "75",
-    "usual": "85"
-  }
+const gradeData = 
+  [
+    {
+        "course": "大学体育3",
+        "credit": "1.0",
+        "grade": "91.0",
+        "category": "公共课",
+        "type": "体",
+        "jxb_id": "5145003FD53906EDE0531D50A8C0B92D",
+        "kcxzmc": "通识必修课",
+        "usual": "91",
+        "ending": "91"
+    },
+    {
+        "course": "马克思主义基本原理",
+        "credit": "3.0",
+        "grade": "87.6",
+        "category": "公共课",
+        "type": "文",
+        "jxb_id": "4FD62511D1F53B7DE0531D50A8C043BA",
+        "kcxzmc": "公共必修课",
+        "usual": "93",
+        "ending": "66"
+    },
+    {
+        "course": "大学英语（JR3）",
+        "credit": "2.0",
+        "grade": "88.4",
+        "category": "公共课",
+        "type": null,
+        "jxb_id": "4F28131041EB1703E0531D50A8C0F629",
+        "kcxzmc": "公共必修课",
+        "usual": "88",
+        "ending": "89"
+    },
+    {
+        "course": "英汉语言文化对比与翻译（通核）",
+        "credit": "2.0",
+        "grade": "90.0",
+        "category": "公共课",
+        "type": "人文与艺术",
+        "jxb_id": "50634D9560015D56E0531D50A8C0E74C",
+        "kcxzmc": "通识核心课",
+        "usual": "90",
+        "ending": "90"
+    },
+    {
+        "course": "数据结构实验",
+        "credit": "1.0",
+        "grade": "93.1",
+        "category": "公共课",
+        "type": "理",
+        "jxb_id": "5064C3D1686E7550E0531E50A8C0699E",
+        "kcxzmc": "专业主干课程",
+        "usual": "98.5",
+        "ending": "85"
+    },
+    {
+        "course": "数字逻辑",
+        "credit": "3.5",
+        "grade": "88.5",
+        "category": "公共课",
+        "type": "理",
+        "jxb_id": "5069B20140BF4137E0531E50A8C07606",
+        "kcxzmc": "专业主干课程",
+        "usual": "90",
+        "ending": "87"
+    }
 ]
 
 class Result extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      timesPressed1: 0,
       index: 0,
-      data: gradeData,
+      data: [],
     }
   }
-  handlePress = () => {
-    this.setState({
-      timesPressed: this.state.timesPressed + 1,
-    });
-  };
+
   componentWillMount() {
-    // alert(window.location.href)
-    // InfoService.getInfoList()
-    //   .then((data) => {
-    //     this.setState({data})
-    //   })
+    GradeService.getGradeList(2017,3)
+      .then((data) => {
+        console.log(data)
+        this.setState({data})
+      })
+  }
+
+  calcGPA(grade) {
+    if (grade < 60) {
+      return 0;
+    } else if(grade >= 60 && grade < 65) {
+      return 1;
+    }else if(grade >= 65 && grade < 70) {
+      return 1.5;
+    }else if(grade >= 70 && grade < 75) {
+      return 2;
+    }else if(grade >= 75 && grade < 80) {
+      return 2.5;
+    }else if(grade >= 80 && grade < 85) {
+      return 3;
+    }else if(grade >= 85 && grade < 90) {
+      return 3.5;
+    }else if(grade >= 90 && grade < 95) {
+      return 4;
+    }else if(grade >= 95 && grade < 100) {
+      return 4.5;
+    }else {
+      return 5;
+    }
   }
   listItem = (item, index) => {
-    var textLog = '';
-    if (this.state.timesPressed1 > 1) {
-      textLog = this.state.timesPressed + 'x onPress';
-    } else if (this.state.timesPressed1 > 0) {
-      textLog = 'onPress';
-    }
     return (
       <View style={styles.item}>
-       <View style={styles.row}>
-          <Text style={[styles.category,styles.verticalBtn]}>{item.kcxzmc}</Text>
-          <Text style={[styles.type,styles.verticalBtn]}>{item.type}</Text>
-          <Text style={[styles.credit,styles.verticalBtn]}>学分{item.credict}</Text>
+       <View style={[styles.row]}>
+          <View style={[styles.first_row]}>
+            <Text style={[styles.category, styles.info_box,styles.middle_font]}>{item.kcxzmc}</Text>
+            <Text style={[styles.type, styles.info_box,styles.middle_font]}>{item.type || "无数据"}</Text>
+          </View>
+          <Text style={[styles.credit, styles.info_box,styles.middle_font]}>学分{item.credit}</Text>
+        </View>
+        <View style={[styles.row, styles.middle_row]}>
+          <Text style={[styles.course,styles.middle_font]}>{item.course}</Text>
+          <Text style={[styles.grade, styles.large_font]}>成绩：{item.grade}</Text>
         </View>
         <View style={[styles.row]}>
-          <Text style={[styles.course,styles.verticalBtn]}>{item.course}</Text>
-          <Text style={[styles.grade,styles.verticalBtn]}>成绩{item.grade}</Text>
-        </View>
-        <View style={[styles.row]}>
-            <Text style={[styles.detailGrade, styles.uausl,styles.verticalBtn]}>平时分：{item.usual}</Text>
-            <Text style={[styles.detailGrade, styles.ending,styles.verticalBtn]}>期末分：{item.ending}</Text>
-            <Text style={[styles.detailGrade, styles.gpa,styles.verticalBtn]}>绩点：4.0</Text>
+            <Text style={[styles.small_font]}>平时分：{item.usual}</Text>
+            <Text style={[styles.small_font]}>期末分：{item.ending}</Text>
+            <Text style={[styles.small_font]}>绩点：{this.calcGPA(item.grade)}</Text>
         </View>
       </View>
     );
   };
   render() {
+    // return (
+    //   <View style={styles.container}>
+    //     <ListView
+    //       renderRow={this.listItem}
+    //       dataSource={this.state.data}
+    //     />
+    //   </View>
+    // )
     return (
-      <View style={styles.container}>
-      <ListView
-        renderRow={this.listItem}
-        dataSource={this.state.data}
-      />
+      <View style={styles.app}>
+        <ListView
+          renderRow={this.listItem}
+          dataSource={gradeData}
+        />
       </View>
-    );
+    )
   }
 }
 export default Result;

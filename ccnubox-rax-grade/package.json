@@ -1,6 +1,6 @@
 {
   "name": "ccnubox-rax-grade",
-  "author": "muxistudio",
+  "author": "muxi-mfe",
   "version": "0.0.0",
   "scripts": {
     "start": "rax-scripts start",

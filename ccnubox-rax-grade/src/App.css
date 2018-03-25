@@ -25,7 +25,8 @@
   color: #434343;
 }
 
-.top_box, .middle_box {
+.top_box,
+.middle_box {
   background-color: #ffffff;
 }
 
@@ -36,21 +37,36 @@
   background-color: #6767fa;
 }
 
-.middle_box, .bottom_box{
+.middle_box,
+.bottom_box {
   margin-top: 50;
 }
 
-.whiteText {
+.white_text {
   color: #ffffff;
 }
 
 .triangle {
-  border-left: 20px solid transparent;
-  border-right: 20px solid transparent;
-  border-top: 40px solid #000;
+  display: block;
   width: 0;
   height: 0;
-  display: inline-block;
+  border-width: 30;
+  border-style:solid;
+  border-left-color:transparent;
+  border-right-color:salmon;
+  border-top-color:salmon;
+  border-bottom-color:transparent;
+  /* border-left-width: 20;
+  border-left-style: solid;
+  border-left-color: transparent;
+  border-right: 20px solid transparent;
+  border-right-width: 20;
+  border-right-style: solid;
+  border-right-color: transparent;
+  border-top-width: 40;
+  border-top-style: solid; */
+  
+
 }
 
 .dropdown {
@@ -59,42 +75,17 @@
   align-items: center;
 }
 
-.dropTriangle{
-  border-left: 20px solid transparent;
-  border-right: 20px solid transparent;
-  border-top: 40px solid #000;
+.drop_triangle {
+  border-left-color: transparent;
+  border-right-color: transparent;
+  border-bottom-color: #ffffff;
+  border-left-width: 20;
+  border-right-width: 20;
+  border-bottom-width: 40;
+  border-left-style: solid;
+  border-right-style: solid;
+  border-bottom-style: solid;
   width: 0;
   height: 0;
-  margin-top: 22px;
-}
-
-.item {
-  width: 550;
-  border-radius: 10;
-  padding: 25 30;
-}
-.row {
-  width: 100%;
-}
-.verticalBtn {
-  /*vertical-align: center;*/
-  flex: 1;
-  justify-content: center;
-  align-items: center;
-  display: inline-block;
-}
-.infoBox {
-  border-width: 3;
-  padding: 12 17;
-  border-radius: 6;
-  height: 44px;
-}
-.middleFont {
-  font-size: 28;
-}
-.largeFont {
-  font-size: 32;
-}
-.type {
-  border-color: rgb(254, 183, 90);
+  margin-top: 22;
 }

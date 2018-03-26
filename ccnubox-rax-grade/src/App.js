@@ -8,11 +8,30 @@ import GradeService from "./services/grade";
 import Animated from "rax-animated";
 //import BoxButton from "../box-ui/common/button";
 import Button from "rax-button";
-import Link from 'rax-link';
+import Link from "rax-link";
 
 const id = 2016210773;
 
 const { View: AnimatedView } = Animated;
+
+class ArrowDown extends Component {
+  render() {
+    return (<svg
+      style={styles.arrow_down}
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <defs>
+        <style type="text/css" />
+      </defs>
+      <path
+        d="M191.815 319.981h640.37l-320.184 384.016z"
+        p-id="1529"
+        fill="#000000"
+      />
+    </svg>
+    );
+  }
+};
 
 class Dropdown extends Component {
   constructor(props) {
@@ -126,10 +145,12 @@ class Year extends Component {
   render() {
     return (
       <View style={[styles.choose_box, styles.top_box]}>
-        <Touchable onPress={this.showModal}>
-          <Text>{this.xnm}学年</Text>
-          <div style={[styles.triangle]} />
-        </Touchable>
+        <View style={styles.firstRow}>
+          <Touchable onPress={this.showModal}>
+            <Text>{this.xnm}学年</Text>
+            <ArrowDown />
+          </Touchable>
+        </View>
         <Dropdown ref="modal">
           <View style={styles.dropdown}>
             <div style={styles.drop_triangle} />
@@ -155,20 +176,20 @@ class Term extends Component {
   constructor(props) {
     super(props);
     this.chooseTerm = { term: 1, termText: "第一学期" };
-   this.TermOptions = [
-        {
-          value: 3,
-          text: "第一学期"
-        },
-        {
-          value: 12,
-          text: "第二学期"
-        },
-        {
-          value: 16,
-          text: "第三学期"
-        }
-      ];
+    this.TermOptions = [
+      {
+        value: 3,
+        text: "第一学期"
+      },
+      {
+        value: 12,
+        text: "第二学期"
+      },
+      {
+        value: 16,
+        text: "第三学期"
+      }
+    ];
   }
   showModal = () => {
     this.refs.modal.show();
@@ -218,7 +239,12 @@ class App extends Component {
           }}
           style={[styles.choose_box, styles.bottom_box]}
         >
-          <Link href="http://10.193.237.131:9999/js/second.bundle.js?_wx_tpl=http://10.193.237.131:9999/js/second.bundle.js" style={styles.white_text}>查询</Link>
+          <Link
+            href="http://10.193.237.131:9999/js/second.bundle.js?_wx_tpl=http://10.193.237.131:9999/js/second.bundle.js"
+            style={styles.white_text}
+          >
+            查询
+          </Link>
         </Button>
       </View>
     );

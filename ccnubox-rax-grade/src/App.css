@@ -46,46 +46,8 @@
   color: #ffffff;
 }
 
-.triangle {
-  display: block;
-  width: 0;
-  height: 0;
-  border-width: 30;
-  border-style:solid;
-  border-left-color:transparent;
-  border-right-color:salmon;
-  border-top-color:salmon;
-  border-bottom-color:transparent;
-  /* border-left-width: 20;
-  border-left-style: solid;
-  border-left-color: transparent;
-  border-right: 20px solid transparent;
-  border-right-width: 20;
-  border-right-style: solid;
-  border-right-color: transparent;
-  border-top-width: 40;
-  border-top-style: solid; */
-  
-
-}
-
 .dropdown {
   flex: 1;
   justify-content: center;
   align-items: center;
-}
-
-.drop_triangle {
-  border-left-color: transparent;
-  border-right-color: transparent;
-  border-bottom-color: #ffffff;
-  border-left-width: 20;
-  border-right-width: 20;
-  border-bottom-width: 40;
-  border-left-style: solid;
-  border-right-style: solid;
-  border-bottom-style: solid;
-  width: 0;
-  height: 0;
-  margin-top: 22;
 }

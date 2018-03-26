@@ -96,26 +96,12 @@ class Result extends Component {
   calcGPA(grade) {
     if (grade < 60) {
       return 0;
-    } else if(grade >= 60 && grade < 65) {
-      return 1;
-    }else if(grade >= 65 && grade < 70) {
-      return 1.5;
-    }else if(grade >= 70 && grade < 75) {
-      return 2;
-    }else if(grade >= 75 && grade < 80) {
-      return 2.5;
-    }else if(grade >= 80 && grade < 85) {
-      return 3;
-    }else if(grade >= 85 && grade < 90) {
-      return 3.5;
-    }else if(grade >= 90 && grade < 95) {
-      return 4;
-    }else if(grade >= 95 && grade < 100) {
-      return 4.5;
-    }else {
-      return 5;
+    } else {
+      var gpa = Math.floor((grade - 60) / 5) * 0.5 + 1;
+      return gpa;
     }
   }
+
   listItem = (item, index) => {
     return (
       <View style={styles.item}>
@@ -139,22 +125,22 @@ class Result extends Component {
     );
   };
   render() {
-    // return (
-    //   <View style={styles.container}>
-    //     <ListView
-    //       renderRow={this.listItem}
-    //       dataSource={this.state.data}
-    //     />
-    //   </View>
-    // )
     return (
-      <View style={styles.app}>
+      <View style={styles.container}>
         <ListView
           renderRow={this.listItem}
-          dataSource={gradeData}
+          dataSource={this.state.data}
         />
       </View>
     )
+    // return (
+    //   <View style={styles.app}>
+    //     <ListView
+    //       renderRow={this.listItem}
+    //       dataSource={gradeData}
+    //     />
+    //   </View>
+    // )
   }
 }
 export default Result;

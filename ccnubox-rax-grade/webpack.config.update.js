@@ -1,9 +1,11 @@
 // webpack.config.update.js
+const path = require('path');
+
 module.exports = function update(webpackConfig) {
   webpackConfig.entry["second.bundle"] = [
-    "/Users/cairuyun/Desktop/Projects/ccnubox/ccnubox-rax-grade/ccnubox-rax-grade/node_modules/rax-scripts/lib/dev-utils/webpackHotDevClient.js",
-    "/Users/cairuyun/Desktop/Projects/ccnubox/ccnubox-rax-grade/ccnubox-rax-grade/node_modules/rax-hot-loader/patch.js",
-    "/Users/cairuyun/Desktop/Projects/ccnubox/ccnubox-rax-grade/ccnubox-rax-grade/src/second.js"
+    path.resolve(__dirname, "./node_modules/rax-scripts/lib/dev-utils/webpackHotDevClient.js"),
+    path.resolve(__dirname, "./node_modules/rax-hot-loader/patch.js"),
+    path.resolve(__dirname, "./src/second.js")
   ];
   console.log("here", webpackConfig);
   return webpackConfig;

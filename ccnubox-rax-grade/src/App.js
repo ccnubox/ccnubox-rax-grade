@@ -9,29 +9,9 @@ import Animated from "rax-animated";
 //import BoxButton from "../box-ui/common/button";
 import Button from "rax-button";
 import Link from "rax-link";
-
-const id = 2016210773;
+import Image from "rax-image";
 
 const { View: AnimatedView } = Animated;
-
-class ArrowDown extends Component {
-  render() {
-    return (<svg
-      style={styles.arrow_down}
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <defs>
-        <style type="text/css" />
-      </defs>
-      <path
-        d="M191.815 319.981h640.37l-320.184 384.016z"
-        p-id="1529"
-        fill="#000000"
-      />
-    </svg>
-    );
-  }
-};
 
 class Dropdown extends Component {
   constructor(props) {
@@ -46,17 +26,15 @@ class Dropdown extends Component {
   };
 
   static defaultProps = {
-    visible: false,
-    options: null
+    visible: false
   };
 
   state = {
-    visible: false,
-    options: null
+    visible: false
   };
 
   animated(state, callback) {
-    const { visible, options } = state;
+    const { visible, value } = state;
     Animated.timing(this.fadeAnim, { toValue: visible === true ? 1 : 0 }).start(
       callback
     );
@@ -101,8 +79,7 @@ class Dropdown extends Component {
 
   componentWillMount() {
     this.setState({
-      visible: this.props.visible,
-      options: this.props.options
+      visible: this.props.visible
     });
   }
 
@@ -112,14 +89,14 @@ class Dropdown extends Component {
 
   render() {
     const { contentStyle, children } = this.props;
-    const { visible, options } = this.state;
+    const { visible } = this.state;
     return (
       visible && (
         <AnimatedView
           onClick={() => {
             this.hide();
           }}
-          style={[{ opacity: this.fadeAnim }]}
+          style={[{ opacity: this.fadeAnim }, styles.dropdown_container]}
         >
           <Touchable>{children}</Touchable>
         </AnimatedView>
@@ -128,43 +105,98 @@ class Dropdown extends Component {
   }
 }
 
+const id = "2016210773";
+var year = parseInt(id.substr(0, 4));
 class Year extends Component {
   constructor(props) {
     super(props);
-    this.year = this.id;
-    this.xnm = 2016;
+    //this.year = 2016;
+    this.nextYear = year + 1;
+    this.state = {
+      value: year
+    };
   }
   showModal = () => {
     this.refs.modal.show();
   };
 
-  hideModal = () => {
+  hideModal = year => {
+    this.setState({
+      value: year
+    });
     this.refs.modal.hide();
   };
 
   render() {
     return (
-      <View style={[styles.choose_box, styles.top_box]}>
-        <View style={styles.firstRow}>
-          <Touchable onPress={this.showModal}>
-            <Text>{this.xnm}学年</Text>
-            <ArrowDown />
-          </Touchable>
-        </View>
+      <View>
+        <Touchable onPress={this.showModal} style={[styles.choose_box, styles.top_box]}>
+          <Text>
+            {this.state.value}-{this.state.value + 1} 学年
+          </Text>
+          <Image
+            style={styles.down}
+            source={require("./assets/triangle_down.png")}
+            resizeMode="cover"
+          />
+        </Touchable>
         <Dropdown ref="modal">
-          <View style={styles.dropdown}>
-            <div style={styles.drop_triangle} />
-            <Touchable onPress={this.hideModal}>
+          <View style={styles.dropdown_list}>
+            <Image
+              style={styles.down}
+              source={require("./assets/triangle_up.png")}
+              resizeMode="cover"
+            />
+            <View
+              style={styles.select_item}
+              onClick={() => {
+                this.hideModal(2016);
+              }}
+            >
               <Text>
-                {this.xnm} - {this.xnm + 1}学年
+                {year}-{year + 1} 学年
               </Text>
-            </Touchable>
-            <Touchable onPress={this.hideModal}>
-              <Text>{this.xnm + 2}学年</Text>
-            </Touchable>
-            <Touchable onPress={this.hideModal}>
-              <Text>{this.xnm + 3}学年</Text>
-            </Touchable>
+            </View>
+            <View
+              style={styles.select_item}
+              onClick={() => {
+                this.hideModal(2017);
+              }}
+            >
+              <Text>
+                {year + 1}-{year + 2} 学年
+              </Text>
+            </View>
+            <View
+              style={styles.select_item}
+              onClick={() => {
+                this.hideModal(2018);
+              }}
+            >
+              <Text>
+                {year + 2}-{year + 3} 学年
+              </Text>
+            </View>
+            <View
+              style={styles.select_item}
+              onClick={() => {
+                this.hideModal(2019);
+              }}
+            >
+              <Text>
+                {year + 3}-{year + 4} 学年
+              </Text>
+            </View>
+            <View
+              style={styles.select_item}
+              onClick={() => {
+                this.hideModal(2020);
+              }}
+            >
+              <Text>
+                {year + 4}-{year + 5} 学年
+              </Text>
+            </View>
           </View>
         </Dropdown>
       </View>
@@ -175,7 +207,6 @@ class Year extends Component {
 class Term extends Component {
   constructor(props) {
     super(props);
-    this.chooseTerm = { term: 1, termText: "第一学期" };
     this.TermOptions = [
       {
         value: 3,
@@ -190,32 +221,60 @@ class Term extends Component {
         text: "第三学期"
       }
     ];
+    this.state = {
+      chooseTerm: { value: 3, text: "第一学期" }
+    };
   }
+
   showModal = () => {
     this.refs.modal.show();
   };
 
-  hideModal = () => {
+  hideModal = index => {
+    this.setState({
+      chooseTerm: {
+        value: this.TermOptions[index].value,
+        text: this.TermOptions[index].text
+      }
+    });
     this.refs.modal.hide();
   };
 
   render() {
     return (
-      <View style={[styles.choose_box, styles.middle_box]}>
-        <Touchable onPress={this.showModal}>
-          <Text>{this.chooseTerm.termText}</Text>
+      <View>
+        <Touchable onPress={this.showModal} style={[styles.choose_box, styles.middle_box]}>
+          <Text>{this.state.chooseTerm.text}</Text>
+          <Image
+            style={styles.down}
+            source={require("./assets/triangle_down.png")}
+            resizeMode="cover"
+          />
         </Touchable>
         <Dropdown ref="modal">
-          <View style={styles.dropdown}>
-            <Touchable onPress={this.hideModal}>
-              <Text>{this.TermOptions[0].text}</Text>
-            </Touchable>
-            <Touchable onPress={this.hideModal}>
-              <Text>{this.TermOptions[1].text}</Text>
-            </Touchable>
-            <Touchable onPress={this.hideModal}>
-              <Text>{this.TermOptions[2].text}</Text>
-            </Touchable>
+          <View
+            style={styles.select_item}
+            onClick={() => {
+              this.hideModal(0);
+            }}
+          >
+            <Text>{this.TermOptions[0].text}</Text>
+          </View>
+          <View
+            style={styles.select_item}
+            onClick={() => {
+              this.hideModal(1);
+            }}
+          >
+            <Text>{this.TermOptions[1].text}</Text>
+          </View>
+          <View
+            style={styles.select_item}
+            onClick={() => {
+              this.hideModal(2);
+            }}
+          >
+            <Text>{this.TermOptions[2].text}</Text>
           </View>
         </Dropdown>
       </View>
@@ -233,12 +292,7 @@ class App extends Component {
       <View style={styles.app}>
         <Year />
         <Term />
-        <Button
-          onPress={evt => {
-            // 处理数据
-          }}
-          style={[styles.choose_box, styles.bottom_box]}
-        >
+        <Button style={[styles.choose_box, styles.bottom_box]}>
           <Link
             href="http://10.193.237.131:9999/js/second.bundle.js?_wx_tpl=http://10.193.237.131:9999/js/second.bundle.js"
             style={styles.white_text}

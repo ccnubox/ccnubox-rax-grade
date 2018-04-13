@@ -88,7 +88,7 @@ class Dropdown extends Component {
   }
 
   render() {
-    const { contentStyle, children } = this.props;
+    const { children } = this.props;
     const { visible } = this.state;
     return (
       visible && (
@@ -96,7 +96,7 @@ class Dropdown extends Component {
           onClick={() => {
             this.hide();
           }}
-          style={[{ opacity: this.fadeAnim }, styles.dropdown_container]}
+          style={styles.dropdown_container}
         >
           <Touchable>{children}</Touchable>
         </AnimatedView>
@@ -130,7 +130,10 @@ class Year extends Component {
   render() {
     return (
       <View>
-        <Touchable onPress={this.showModal} style={[styles.choose_box, styles.top_box]}>
+        <Touchable
+          onPress={this.showModal}
+          style={[styles.choose_box, styles.top_box]}
+        >
           <Text>
             {this.state.value}-{this.state.value + 1} 学年
           </Text>
@@ -141,19 +144,19 @@ class Year extends Component {
           />
         </Touchable>
         <Dropdown ref="modal">
+          <Image
+            style={styles.up}
+            source={require("./assets/triangle_up.png")}
+            resizeMode="cover"
+          />
           <View style={styles.dropdown_list}>
-            <Image
-              style={styles.down}
-              source={require("./assets/triangle_up.png")}
-              resizeMode="cover"
-            />
             <View
               style={styles.select_item}
               onClick={() => {
                 this.hideModal(2016);
               }}
             >
-              <Text>
+              <Text style={styles.item_text}>
                 {year}-{year + 1} 学年
               </Text>
             </View>
@@ -163,7 +166,7 @@ class Year extends Component {
                 this.hideModal(2017);
               }}
             >
-              <Text>
+              <Text style={styles.item_text}>
                 {year + 1}-{year + 2} 学年
               </Text>
             </View>
@@ -173,7 +176,7 @@ class Year extends Component {
                 this.hideModal(2018);
               }}
             >
-              <Text>
+              <Text style={styles.item_text}>
                 {year + 2}-{year + 3} 学年
               </Text>
             </View>
@@ -183,7 +186,7 @@ class Year extends Component {
                 this.hideModal(2019);
               }}
             >
-              <Text>
+              <Text style={styles.item_text}>
                 {year + 3}-{year + 4} 学年
               </Text>
             </View>
@@ -193,7 +196,7 @@ class Year extends Component {
                 this.hideModal(2020);
               }}
             >
-              <Text>
+              <Text style={styles.item_text}>
                 {year + 4}-{year + 5} 学年
               </Text>
             </View>
@@ -243,7 +246,10 @@ class Term extends Component {
   render() {
     return (
       <View>
-        <Touchable onPress={this.showModal} style={[styles.choose_box, styles.middle_box]}>
+        <Touchable
+          onPress={this.showModal}
+          style={[styles.choose_box, styles.middle_box]}
+        >
           <Text>{this.state.chooseTerm.text}</Text>
           <Image
             style={styles.down}
@@ -252,29 +258,36 @@ class Term extends Component {
           />
         </Touchable>
         <Dropdown ref="modal">
-          <View
-            style={styles.select_item}
-            onClick={() => {
-              this.hideModal(0);
-            }}
-          >
-            <Text>{this.TermOptions[0].text}</Text>
-          </View>
-          <View
-            style={styles.select_item}
-            onClick={() => {
-              this.hideModal(1);
-            }}
-          >
-            <Text>{this.TermOptions[1].text}</Text>
-          </View>
-          <View
-            style={styles.select_item}
-            onClick={() => {
-              this.hideModal(2);
-            }}
-          >
-            <Text>{this.TermOptions[2].text}</Text>
+          <Image
+            style={styles.up}
+            source={require("./assets/triangle_up.png")}
+            resizeMode="cover"
+          />
+          <View style={styles.dropdown_list}>
+            <View
+              style={styles.select_item}
+              onClick={() => {
+                this.hideModal(0);
+              }}
+            >
+              <Text style={styles.item_text}>{this.TermOptions[0].text}</Text>
+            </View>
+            <View
+              style={styles.select_item}
+              onClick={() => {
+                this.hideModal(1);
+              }}
+            >
+              <Text style={styles.item_text}>{this.TermOptions[1].text}</Text>
+            </View>
+            <View
+              style={styles.select_item}
+              onClick={() => {
+                this.hideModal(2);
+              }}
+            >
+              <Text style={styles.item_text}>{this.TermOptions[2].text}</Text>
+            </View>
           </View>
         </Dropdown>
       </View>

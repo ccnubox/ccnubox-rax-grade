@@ -10,6 +10,7 @@ import Animated from "rax-animated";
 import Button from "rax-button";
 import Link from "rax-link";
 import Image from "rax-image";
+import ScrollView from "rax-scrollview";
 
 const { View: AnimatedView } = Animated;
 
@@ -96,7 +97,7 @@ class Dropdown extends Component {
           onClick={() => {
             this.hide();
           }}
-          style={styles.dropdown_container}
+          // style={styles.mask}
         >
           <Touchable>{children}</Touchable>
         </AnimatedView>
@@ -113,7 +114,8 @@ class Year extends Component {
     //this.year = 2016;
     this.nextYear = year + 1;
     this.state = {
-      value: year
+      value: year,
+      showsVerticalScrollIndicator: false
     };
   }
   showModal = () => {
@@ -129,7 +131,7 @@ class Year extends Component {
 
   render() {
     return (
-      <View>
+      <View style={styles.zindex}>
         <Touchable
           onPress={this.showModal}
           style={[styles.choose_box, styles.top_box]}
@@ -143,65 +145,74 @@ class Year extends Component {
             resizeMode="cover"
           />
         </Touchable>
-        <Dropdown ref="modal">
-          <Image
-            style={styles.up}
-            source={require("./assets/triangle_up.png")}
-            resizeMode="cover"
-          />
-          <View style={styles.dropdown_list}>
-            <View
-              style={styles.select_item}
-              onClick={() => {
-                this.hideModal(2016);
+        <View style={styles.dropdown_container}>
+          <Dropdown ref="modal">
+            <Image
+              style={styles.up}
+              source={require("./assets/triangle_up.png")}
+              resizeMode="cover"
+            />
+            {/* <View style={styles.dropdown_list}> */}
+            <ScrollView
+              ref={scrollView => {
+                this.scrollView = scrollView;
               }}
+              style={styles.dropdown_list}
             >
-              <Text style={styles.item_text}>
-                {year}-{year + 1} 学年
-              </Text>
-            </View>
-            <View
-              style={styles.select_item}
-              onClick={() => {
-                this.hideModal(2017);
-              }}
-            >
-              <Text style={styles.item_text}>
-                {year + 1}-{year + 2} 学年
-              </Text>
-            </View>
-            <View
-              style={styles.select_item}
-              onClick={() => {
-                this.hideModal(2018);
-              }}
-            >
-              <Text style={styles.item_text}>
-                {year + 2}-{year + 3} 学年
-              </Text>
-            </View>
-            <View
-              style={styles.select_item}
-              onClick={() => {
-                this.hideModal(2019);
-              }}
-            >
-              <Text style={styles.item_text}>
-                {year + 3}-{year + 4} 学年
-              </Text>
-            </View>
-            <View
-              style={styles.select_item}
-              onClick={() => {
-                this.hideModal(2020);
-              }}
-            >
-              <Text style={styles.item_text}>
-                {year + 4}-{year + 5} 学年
-              </Text>
-            </View>
-          </View>
-        </Dropdown>
+              <View
+                style={[styles.select_item, styles.item_border]}
+                onClick={() => {
+                  this.hideModal(year);
+                }}
+              >
+                <Text style={styles.item_text}>
+                  {year}-{year + 1} 学年
+                </Text>
+              </View>
+              <View
+                style={[styles.select_item, styles.item_border]}
+                onClick={() => {
+                  this.hideModal(year + 1);
+                }}
+              >
+                <Text style={styles.item_text}>
+                  {year + 1}-{year + 2} 学年
+                </Text>
+              </View>
+              <View
+                style={[styles.select_item, styles.item_border]}
+                onClick={() => {
+                  this.hideModal(year + 2);
+                }}
+              >
+                <Text style={styles.item_text}>
+                  {year + 2}-{year + 3} 学年
+                </Text>
+              </View>
+              <View
+                style={[styles.select_item, styles.item_border]}
+                onClick={() => {
+                  this.hideModal(year + 3);
+                }}
+              >
+                <Text style={styles.item_text}>
+                  {year + 3}-{year + 4} 学年
+                </Text>
+              </View>
+              <View
+                style={styles.select_item}
+                onClick={() => {
+                  this.hideModal(year + 4);
+                }}
+              >
+                <Text style={styles.item_text}>
+                  {year + 4}-{year + 5} 学年
+                </Text>
+              </View>
+              {/* </View> */}
+            </ScrollView>
+          </Dropdown>
+        </View>
       </View>
     );
   }
@@ -257,39 +268,41 @@ class Term extends Component {
             resizeMode="cover"
           />
         </Touchable>
-        <Dropdown ref="modal">
-          <Image
-            style={styles.up}
-            source={require("./assets/triangle_up.png")}
-            resizeMode="cover"
-          />
-          <View style={styles.dropdown_list}>
-            <View
-              style={styles.select_item}
-              onClick={() => {
-                this.hideModal(0);
-              }}
-            >
-              <Text style={styles.item_text}>{this.TermOptions[0].text}</Text>
+        <View style={styles.term_list}>
+          <Dropdown ref="modal">
+            <Image
+              style={styles.up}
+              source={require("./assets/triangle_up.png")}
+              resizeMode="cover"
+            />
+            <View style={styles.dropdown_list}>
+              <View
+                style={[styles.select_item, styles.item_border]}
+                onClick={() => {
+                  this.hideModal(0);
+                }}
+              >
+                <Text style={styles.item_text}>{this.TermOptions[0].text}</Text>
+              </View>
+              <View
+                style={[styles.select_item, styles.item_border]}
+                onClick={() => {
+                  this.hideModal(1);
+                }}
+              >
+                <Text style={styles.item_text}>{this.TermOptions[1].text}</Text>
+              </View>
+              <View
+                style={styles.select_item}
+                onClick={() => {
+                  this.hideModal(2);
+                }}
+              >
+                <Text style={styles.item_text}>{this.TermOptions[2].text}</Text>
+              </View>
             </View>
-            <View
-              style={styles.select_item}
-              onClick={() => {
-                this.hideModal(1);
-              }}
-            >
-              <Text style={styles.item_text}>{this.TermOptions[1].text}</Text>
-            </View>
-            <View
-              style={styles.select_item}
-              onClick={() => {
-                this.hideModal(2);
-              }}
-            >
-              <Text style={styles.item_text}>{this.TermOptions[2].text}</Text>
-            </View>
-          </View>
-        </Dropdown>
+          </Dropdown>
+        </View>
       </View>
     );
   }
@@ -303,8 +316,6 @@ class App extends Component {
   render() {
     return (
       <View style={styles.app}>
-        <Year />
-        <Term />
         <Button style={[styles.choose_box, styles.bottom_box]}>
           <Link
             href="http://10.193.237.131:9999/js/second.bundle.js?_wx_tpl=http://10.193.237.131:9999/js/second.bundle.js"
@@ -313,6 +324,8 @@ class App extends Component {
             查询
           </Link>
         </Button>
+        <Term />
+        <Year />
       </View>
     );
   }

@@ -95,18 +95,28 @@
   height: 370;
 }
 
-.arrow_list {
+.center {
   display: flex;
   justify-content: center;
   flex-direction: row;
   align-items: center;
   
 }
-.up {
+.first_triangle_up, .second_triangle_up{
   width: 80;
   height: 60;
-  /* transform: scale() */
+  margin-bottom: -21;
+  margin-left: 200;
 }
+
+.first_triangle_up {
+  margin-top: -18;
+}
+
+.second_triangle_up {
+  margin-top: -10;
+}
+
 .term_list {
   position: absolute;
   top: 140;
@@ -115,14 +125,4 @@
   justify-content: center;
   flex-direction: row;
   align-items: center;
-}
-.mask {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 750;
-  height: 1200;
-  background-color: salmon;
-  z-index: 1000;
-  overflow: hidden;
 }

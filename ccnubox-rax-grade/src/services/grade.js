@@ -6,9 +6,9 @@ const GradeService = {
       method: "GET",
       url: "https://ccnubox.muxixyz.com/api/grade/?xnm=" + xnm + "&xqm=" + xqm,
       headers: {
-        'Bigipserverpool': "122726592.20480.0000",
+        'Bigipserverpool': "89172160.20480.0000",
         'Sid': "2016210773",
-        'Jsessionid': "47E9386725CA307D02E09734D6250A2E",
+        'Jsessionid': "3892DCD4F0D2B95656A77CECC667287D",
         'Authorization': "Basic MjAxNjIxMDc3MzowMzA2MTAxNDkwY3J5"
         //'Authorization': "Basic " + btoa("id:password")
       }

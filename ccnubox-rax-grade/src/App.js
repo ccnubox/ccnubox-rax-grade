@@ -170,7 +170,7 @@ class App extends Component {
       <View style={styles.app}>
         <Button style={[styles.choose_box, styles.bottom_box]}>
           <Link
-            href="http://10.193.237.131:9999/js/second.bundle.js?_wx_tpl=http://10.193.237.131:9999/js/second.bundle.js"
+            href="http://192.168.43.243:9999/js/second.bundle.js?_wx_tpl=http://192.168.43.243:9999/js/second.bundle.js"
             style={styles.white_text}
           >
             查询

@@ -24,7 +24,6 @@
 
 .middle_box {
   transform: translateY(50);
-  /* margin-top: -50; */
 }
 
 .top_box,
@@ -39,10 +38,7 @@
   align-items: center;
   justify-content: center;
   background-color: #6767fa; 
-  /* position: absolute;
-  top: 613; */
   transform: translateY(300);
-  /* margin-top: 50; */
 }
 
 .white_text {
@@ -74,7 +70,7 @@
 }
 
 .item_text {
-  color: #6767fa;;
+  color: #6767fa;
 }
 
 .dropdown_container {

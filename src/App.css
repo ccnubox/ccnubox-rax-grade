@@ -58,9 +58,6 @@
   align-items: center;
   justify-content: center;
   z-index: 100;
-}
-
-.item_border {
   border-bottom: 2px solid #ebf0f0;
 }
 

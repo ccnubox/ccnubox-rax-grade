@@ -6,7 +6,7 @@ import Touchable from "rax-touchable";
 import ListView from "rax-listview";
 import GradeService from "./services/grade";
 import Animated from "rax-animated";
-//import BoxButton from "../box-ui/common/button";
+import BoxButton from "./box-ui/common/button";
 import Button from "rax-button";
 import Link from "rax-link";
 import Image from "rax-image";
@@ -196,14 +196,14 @@ class App extends Component {
   render() {
     return (
       <View style={styles.app}>
-        <Button style={[styles.choose_box, styles.bottom_box]}>
+        <BoxButton style={[styles.choose_box, styles.bottom_box]}>
           <Link
             href="http://192.168.43.243:9999/js/second.bundle.js?_wx_tpl=http://192.168.43.243:9999/js/second.bundle.js"
             style={styles.white_text}
           >
             查询
           </Link>
-        </Button>
+        </BoxButton>
         <View>
           <Touchable
             onPress={this.showTermModal}

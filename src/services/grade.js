@@ -1,4 +1,4 @@
-import request from "../../box-ui/util/request";
+import request from "../box-ui/util/request.js";
 
 const GradeService = {
   getGradeList(xnm, xqm) {

@@ -4,8 +4,6 @@ import Text from 'rax-text';
 import ListView from 'rax-listview';
 import styles from "./result.css";
 import GradeService from "./services/grade.js";
-import Button from "rax-button";
-import Image from 'rax-image';
 
 class Result extends Component {
   constructor(props) {

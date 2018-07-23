@@ -34,10 +34,10 @@
 }
 
 .bottom_box {
-  flex-direction: row;
+  /* flex-direction: row;
   align-items: center;
-  justify-content: center;
-  background-color: #6767fa; 
+  justify-content: center; */
+  /* background-color: #6767fa;  */
   transform: translateY(300);
 }
 

@@ -196,14 +196,14 @@ class App extends Component {
   render() {
     return (
       <View style={styles.app}>
-        <BoxButton style={[styles.choose_box, styles.bottom_box]}>
+        <Button style={[styles.choose_box, styles.bottom_box]}>
           <Link
             href="http://192.168.43.243:9999/js/second.bundle.js?_wx_tpl=http://192.168.43.243:9999/js/second.bundle.js"
             style={styles.white_text}
           >
             查询
           </Link>
-        </BoxButton>
+        </Button>
         <View>
           <Touchable
             onPress={this.showTermModal}

@@ -179,20 +179,6 @@ class App extends Component {
     });
   };
 
-  listItem = (item, index) => {
-    return(
-      <View
-        style={styles.select_item}
-        onClick={() => {
-          this.hideYearModal(item);
-        }}
-      >
-        <Text style={styles.item_text}>
-          {item}-{item + 1} 学年
-        </Text>
-      </View>
-    )
-  }
   render() {
     return (
       <View style={styles.app}>

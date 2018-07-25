@@ -228,7 +228,7 @@ class App extends Component {
             </Dropdown>
           </View>
         </View>
-        <View style={styles.zindex}>
+        <View>
           <Touchable
             onPress={this.showYearModal}
             style={[styles.choose_box, styles.top_box]}
@@ -249,7 +249,6 @@ class App extends Component {
                 source={require("./assets/triangle_up.png")}
                 resizeMode="cover"
               />
-             
               <ScrollView
                 ref={scrollView => {
                   this.scrollView = scrollView;

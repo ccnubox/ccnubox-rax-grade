@@ -3,14 +3,12 @@ import View from "rax-view";
 import Text from "rax-text";
 import styles from "./App.css";
 import Touchable from "rax-touchable";
-import ListView from "rax-listview";
-import GradeService from "./services/grade";
 import Animated from "rax-animated";
-import BoxButton from "./box-ui/common/button";
 import Button from "rax-button";
-import Link from "rax-link";
 import Image from "rax-image";
 import ScrollView from "rax-scrollview";
+const native = require("@weex-module/test");
+import { parseSearchString } from "./box-ui/util";
 
 const { View: AnimatedView } = Animated;
 
@@ -52,13 +50,9 @@ class Dropdown extends Component {
   }
 
   hide() {
-    const currentState = { visible: false };
-    this.animated(currentState, () =>
-      this.setState(
-        currentState,
-        () => this.props.onHide && this.props.onHide(currentState)
-      )
-    );
+    this.setState({
+      visible: false
+    });
   }
 
   toggle(visible) {
@@ -106,8 +100,17 @@ class Dropdown extends Component {
   }
 }
 
-const id = "2016210773";
-var year = parseInt(id.substr(0, 4));
+let qd;
+if (window.location.search) {
+  qd = parseSearchString(window.location.search);
+}
+
+if (!qd) {
+  alert("参数缺失错误");
+}
+
+const id = qd.sid[0];
+const year = parseInt(id.substr(0, 4));
 
 class App extends Component {
   constructor(props) {
@@ -137,10 +140,17 @@ class App extends Component {
   }
 
   showTermModal = () => {
-    this.refs.termModal.show();
-    this.setState({
-      termOnblur: true
-    })
+    if (this.refs.termModal.state.visible) {
+      this.setState({
+        termOnblur: false
+      });
+      this.refs.termModal.hide();
+    } else {
+      this.setState({
+        termOnblur: true
+      });
+      this.refs.termModal.show();
+    }
   };
 
   hideTermModal = index => {
@@ -156,7 +166,11 @@ class App extends Component {
 
   showYearModal = () => {
     if (!this.state.termOnblur) {
-      this.refs.yearModal.show();
+      if (this.refs.yearModal.state.visible) {
+        this.refs.yearModal.hide();
+      } else {
+        this.refs.yearModal.show();
+      }
     }
   };
 
@@ -177,104 +191,118 @@ class App extends Component {
     this.setState({
       YearOptions: arr
     });
+  }
+
+  pressApp = () => {
+    this.refs.yearModal.hide();
+    this.refs.termModal.hide();
+    this.setState({
+      termOnblur: false
+    });
+  };
+
+  navToResult = () => {
+    const { value, chooseTerm } = this.state;
+    native.push(
+      `ccnubox://grade.result?xnm=${value}&xqm=${chooseTerm.value}&sid=${id}`
+    );
   };
 
   render() {
     return (
-      <View style={styles.app}>
-        <Button style={[styles.choose_box, styles.bottom_box]}>
-          <Link
-            href="http://192.168.43.243:9999/js/second.bundle.js?_wx_tpl=http://192.168.43.243:9999/js/second.bundle.js"
-            style={styles.white_text}
-          >
-            查询
-          </Link>
-        </Button>
+      <Touchable onPress={this.pressApp} style={styles.app}>
         <View>
-          <Touchable
-            onPress={this.showTermModal}
-            style={[styles.choose_box, styles.middle_box]}
+          <Button
+            style={[styles.choose_box, styles.bottom_box]}
+            onPress={this.navToResult}
           >
-            <Text>{this.state.chooseTerm.text}</Text>
-            <Image
-              style={styles.down}
-              source={require("./assets/triangle_down.png")}
-              resizeMode="cover"
-            />
-          </Touchable>
-          <View style={styles.term_list}>
-            <Dropdown ref="termModal">
-              <Image
-                style={styles.second_triangle_up}
-                source={require("./assets/triangle_up.png")}
-                resizeMode="cover"
-              />
-              <View style={styles.dropdown_list}>
-                 {this.TermOptions.map((i) => {
-                   return (
-                    <View
-                    style={styles.select_item}
-                    onClick={() => {
-                      this.hideTermModal(this.TermOptions.indexOf(i));
-                    }}
-                  >
-                    <Text style={styles.item_text}>
-                      {i.text}
-                    </Text>
-                  </View>
-                   )
-                 })}
-              </View>
-            </Dropdown>
-          </View>
-        </View>
-        <View>
-          <Touchable
-            onPress={this.showYearModal}
-            style={[styles.choose_box, styles.top_box]}
-          >
-            <Text>
-              {this.state.value}-{this.state.value + 1} 学年
-            </Text>
-            <Image
-              style={styles.down}
-              source={require("./assets/triangle_down.png")}
-              resizeMode="cover"
-            />
-          </Touchable>
-          <View style={styles.dropdown_container}>
-            <Dropdown ref="yearModal">
-              <Image
-                style={styles.first_triangle_up}
-                source={require("./assets/triangle_up.png")}
-                resizeMode="cover"
-              />
-              <ScrollView
-                ref={scrollView => {
-                  this.scrollView = scrollView;
-                }}
-                style={styles.dropdown_list}
-              >
-              {this.state.YearOptions.map((i) => {
-                return(
-                  <View
-                  style={styles.select_item}
-                  onClick={() => {
-                    this.hideYearModal(i);
-                  }}
-                >
-                  <Text style={styles.item_text}>
-                    {i}-{i + 1} 学年
-                  </Text>
+            <Text style={styles.white_text}> 查询</Text>
+          </Button>
+          <View>
+            <Touchable
+              onPress={this.showTermModal}
+              style={[styles.choose_box, styles.middle_box]}
+            >
+              <Text>{this.state.chooseTerm.text}</Text>
+              <Touchable onPress={this.showTermModal}>
+                <Image
+                  style={styles.down}
+                  source={require("./assets/triangle_down.png")}
+                  resizeMode="cover"
+                />
+              </Touchable>
+            </Touchable>
+            <View style={styles.term_list}>
+              <Dropdown ref="termModal">
+                <Image
+                  style={styles.second_triangle_up}
+                  source={require("./assets/triangle_up.png")}
+                  resizeMode="cover"
+                />
+                <View style={styles.dropdown_list}>
+                  {this.TermOptions.map(i => {
+                    return (
+                      <View
+                        style={styles.select_item}
+                        onClick={() => {
+                          this.hideTermModal(this.TermOptions.indexOf(i));
+                        }}
+                      >
+                        <Text style={styles.item_text}>{i.text}</Text>
+                      </View>
+                    );
+                  })}
                 </View>
-                )
-              })
-            }
-              </ScrollView>
-            </Dropdown>
+              </Dropdown>
+            </View>
+          </View>
+          <View>
+            <Touchable
+              onPress={this.showYearModal}
+              style={[styles.choose_box, styles.top_box]}
+            >
+              <Text>
+                {this.state.value}-{this.state.value + 1} 学年
+              </Text>
+              <Image
+                style={styles.down}
+                source={require("./assets/triangle_down.png")}
+                resizeMode="cover"
+              />
+            </Touchable>
+            <View style={styles.dropdown_container}>
+              <Dropdown ref="yearModal">
+                <Image
+                  style={styles.first_triangle_up}
+                  source={require("./assets/triangle_up.png")}
+                  resizeMode="cover"
+                />
+                <ScrollView
+                  ref={scrollView => {
+                    this.scrollView = scrollView;
+                  }}
+                  style={styles.dropdown_list}
+                >
+                  {this.state.YearOptions.map(i => {
+                    return (
+                      <View
+                        style={styles.select_item}
+                        onClick={() => {
+                          this.hideYearModal(i);
+                        }}
+                      >
+                        <Text style={styles.item_text}>
+                          {i}-{i + 1} 学年
+                        </Text>
+                      </View>
+                    );
+                  })}
+                </ScrollView>
+              </Dropdown>
+            </View>
           </View>
         </View>
-      </View>
+      </Touchable>
     );
   }
 }

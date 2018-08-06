@@ -1,11 +1,9 @@
 .app {
   flex: 1;
-  justify-content: center;
   align-items: center;
   font-size: 16px;
+  padding-top: 200;
   background-color: #efeff4;
-  width: 750;
-  height: 1200;
 }
 
 .choose_box {
@@ -18,7 +16,7 @@
   align-items: center;
 }
 
-.top_box {
+.top_box { 
   transform: translateY(-200);
 }
 

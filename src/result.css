@@ -4,7 +4,6 @@
   align-items: center; */
   background-color: #efeff4;
   width: 750;
-  padding: 60;
   flex:1;
 }
 .item {
@@ -12,6 +11,8 @@
   padding: 25 30;
   background-color: #ffffff;
   margin-top: 40;
+  margin-left: 60;
+  margin-right: 60;
 }
 .first_row {
   display: flex;
@@ -26,8 +27,7 @@
 }
 
 .middle_row {
-  margin-top: 10;
-  margin-bottom: 10;
+  margin-top: 12;
 }
 .info_box {
   border-width: 3;
@@ -39,10 +39,11 @@
 }
 .middle_font {
   font-size: 28;
-  
+  line-height: 28;
 }
 .large_font {
   font-size: 32;
+  line-height: 32;
   /* font-weight: bold; */
 }
 .type {
@@ -59,7 +60,12 @@
 .credit {
   border-color: #ccccff;
   color: #ccccff;
+  margin-left: 15;
 }
-.course {
+.grade {
   font-weight: bold;
+}
+
+.last_item {
+  margin-bottom: 60;
 }

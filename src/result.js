@@ -115,7 +115,9 @@ class Result extends Component {
           </View>
         </View>
         <View style={[styles.row, styles.middle_row]}>
-          <Text style={[styles.course, styles.middle_font]}>{item.course}</Text>
+          <Text style={[styles.course, styles.middle_font]}>
+            {item.course.length > 9 ? item.course.slice(0, 9) + "..." : item.course}
+          </Text>
           <Text style={[styles.grade, styles.large_font]}>
             成绩：
             {item.grade}

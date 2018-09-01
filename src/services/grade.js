@@ -1,16 +1,25 @@
 import request from "../box-ui/util/request.js";
 
 const GradeService = {
-  getGradeList(xnm, xqm) {
+  getGradeList(xnm, xqm, cookieJ, cookieB, sid) {
     return request({
       method: "GET",
       url: "https://ccnubox.muxixyz.com/api/grade/?xnm=" + xnm + "&xqm=" + xqm,
       headers: {
-        'Bigipserverpool': "89172160.20480.0000",
-        'Sid': "2016210773",
-        'Jsessionid': "3892DCD4F0D2B95656A77CECC667287D",
-        'Authorization': "Basic MjAxNjIxMDc3MzowMzA2MTAxNDkwY3J5"
-        //'Authorization': "Basic " + btoa("id:password")
+        'Bigipserverpool': cookieB,
+        'Sid': sid,
+        'Jsessionid': cookieJ,
+        'Authorization': "Basic foobar"
+      }
+    });
+  },
+  getGradeListFromCache(xnm, xqm, sid) {
+    return request({
+      method: "GET",
+      url: "https://ccnubox.muxixyz.com/api/grade/?xnm=" + xnm + "&xqm=" + xqm,
+      headers: {
+        'Sid': sid,
+        'Authorization': "Basic foobar"
       }
     });
   }

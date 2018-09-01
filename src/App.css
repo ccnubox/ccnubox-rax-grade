@@ -6,6 +6,13 @@
   background-color: #efeff4;
 }
 
+.notification {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 750;
+}
+
 .choose_box {
   width: 550;
   height: 100;

@@ -9,6 +9,7 @@ import Image from "rax-image";
 import ScrollView from "rax-scrollview";
 const native = require("@weex-module/test");
 import { parseSearchString } from "./box-ui/util";
+import Notification from "./box-ui/common/notification";
 
 const { View: AnimatedView } = Animated;
 
@@ -211,6 +212,7 @@ class App extends Component {
   render() {
     return (
       <Touchable onPress={this.pressApp} style={styles.app}>
+       <Notification style={styles.notification} pageId="com.muxistudio.grade.main"/>
         <View>
           <Button
             style={[styles.choose_box, styles.bottom_box]}

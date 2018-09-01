@@ -3,15 +3,19 @@ import View from "rax-view";
 import Text from "rax-text";
 import ListView from "rax-listview";
 import styles from "./result.css";
+import Image from "rax-image";
 import GradeService from "./services/grade.js";
 const native = require("@weex-module/test");
 import { parseSearchString } from "./box-ui/util";
+import emptyIcon from "./assets/blank3X.png";
+
 class Result extends Component {
   constructor(props) {
     super(props);
     this.state = {
       index: 0,
-      data: []
+      data: [],
+      empty: false
     };
   }
 
@@ -27,13 +31,53 @@ class Result extends Component {
 
     const xnm = qd.xnm[0];
     const xqm = qd.xqm[0];
+    const sid = qd.sid[0];
 
     native.getGrade(xnm, xqm, res => {
-      const list = JSON.parse(res.data);
-      this.setState({
-        data: list
-      });
-      native.changeLoadingStatus(true);
+      if (res.code === "200") {
+        const list = JSON.parse(res.data);
+        if (list.length === 0) {
+          // 显示空白页
+          this.setState({
+            empty: true
+          });
+          native.changeLoadingStatus(true);
+        } else {
+          this.setState({
+            data: list
+          });
+          native.changeLoadingStatus(true);
+        }
+      } else {
+        let errMessage = res.data;
+        // 错误，请求兜底数据
+        // 500 表示登录失败 501 表示获取成绩失败
+        if (res.code === "500") {
+          GradeService.getGradeList(xnm, xqm, res.cookieJ, res.cookieB, sid)
+            .then(res => {
+              this.setState({
+                data: res
+              });
+              native.changeLoadingStatus(true);
+            })
+            .catch(() => {
+              alert(errMessage);
+              native.changeLoadingStatus(true);
+            });
+        } else {
+          GradeService.getGradeListFromCache(xnm, xqm, sid)
+            .then(() => {
+              this.setState({
+                data: res
+              });
+              native.changeLoadingStatus(true);
+            })
+            .catch(() => {
+              alert(errMessage);
+              native.changeLoadingStatus(true);
+            });
+        }
+      }
     });
   }
 
@@ -48,7 +92,12 @@ class Result extends Component {
 
   listItem = (item, index) => {
     return (
-      <View style={[styles.item, index === this.state.data.length - 1 ? styles.last_item : {}]}>
+      <View
+        style={[
+          styles.item,
+          index === this.state.data.length - 1 ? styles.last_item : {}
+        ]}
+      >
         <View style={[styles.row]}>
           <View style={[styles.first_row]}>
             <Text
@@ -60,14 +109,16 @@ class Result extends Component {
               {item.type || "无数据"}
             </Text>
             <Text style={[styles.credit, styles.info_box, styles.middle_font]}>
-              学分{item.credit}
+              学分
+              {item.credit}
             </Text>
           </View>
         </View>
         <View style={[styles.row, styles.middle_row]}>
           <Text style={[styles.course, styles.middle_font]}>{item.course}</Text>
           <Text style={[styles.grade, styles.large_font]}>
-            成绩：{item.grade}
+            成绩：
+            {item.grade}
           </Text>
         </View>
         {/* <View style={[styles.row]}>
@@ -80,10 +131,22 @@ class Result extends Component {
       </View>
     );
   };
+  renderEmptyTip() {
+    return (
+      <View style={styles.empty}>
+        <Image source={emptyIcon} style={styles.empty_icon} />
+        <Text style={styles.text}>暂无成绩</Text>
+      </View>
+    );
+  }
   render() {
     return (
       <View style={styles.app}>
-        <ListView renderRow={this.listItem} dataSource={this.state.data} />
+        {this.state.empty ? (
+          this.renderEmptyTip()
+        ) : (
+          <ListView renderRow={this.listItem} dataSource={this.state.data} />
+        )}
       </View>
     );
   }

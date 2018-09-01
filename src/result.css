@@ -4,7 +4,19 @@
   align-items: center; */
   background-color: #efeff4;
   width: 750;
-  flex:1;
+  flex: 1;
+}
+.empty {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+.empty_icon {
+  margin-top: 150;
+}
+.text {
+  font-size: 32;
+  color: #ccccff;
 }
 .item {
   border-radius: 10;

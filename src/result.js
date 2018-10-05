@@ -7,6 +7,7 @@ import Image from "rax-image";
 import GradeService from "./services/grade.js";
 const native = require("@weex-module/test");
 import { parseSearchString } from "./box-ui/util";
+import { weexAlert } from "./box-ui/common/modal";
 import emptyIcon from "./assets/blank3X.png";
 
 class Result extends Component {
@@ -51,30 +52,61 @@ class Result extends Component {
       } else {
         let errMessage = res.data;
         // 错误，请求兜底数据
-        // 500 表示登录失败 501 表示获取成绩失败
-        if (res.code === "500") {
+        if (res.code === "501") {
+          // 501 表示登录成功但获取成绩失败，用 cookie + 服务端请求方式获取
           GradeService.getGradeList(xnm, xqm, res.cookieJ, res.cookieB, sid)
             .then(res => {
               this.setState({
                 data: res
               });
               native.changeLoadingStatus(true);
+              native.reportInsightApiEvent(
+                "getGradeFromServer",
+                "success",
+                "null"
+              );
             })
             .catch(() => {
-              alert(errMessage);
+              native.reportInsightApiEvent(
+                "getGradeFromServer",
+                "error",
+                e.code
+              );
               native.changeLoadingStatus(true);
+              weexAlert(errMessage).then(res => {
+                native.back();
+              });
             });
+        } else if (res.code === "401") {
+          native.reportInsightApiEvent("getCookieForTable", "error", "401");
+          native.logout();
+          native.back();
+          alert("学号或密码错误，请检查是否修改了 one.ccnu.edu.cn 的密码");
         } else {
+          // 其他错误，说明登录失败，请求缓存作为兜底
           GradeService.getGradeListFromCache(xnm, xqm, sid)
-            .then(() => {
+            .then(res => {
+              const data = JSON.parse(res.val.data);
               this.setState({
-                data: res
+                data
               });
               native.changeLoadingStatus(true);
+              native.reportInsightApiEvent(
+                "getGradeFromServerCache",
+                "success",
+                "null"
+              );
             })
-            .catch(() => {
-              alert(errMessage);
+            .catch(e => {
+              native.reportInsightApiEvent(
+                "getGradeFromServerCache",
+                "error",
+                e.code
+              );
               native.changeLoadingStatus(true);
+              weexAlert(errMessage).then(res => {
+                native.back();
+              });
             });
         }
       }
@@ -115,9 +147,7 @@ class Result extends Component {
           </View>
         </View>
         <View style={[styles.row, styles.middle_row]}>
-          <Text style={[styles.course, styles.middle_font]}>
-            {item.course.length > 9 ? item.course.slice(0, 9) + "..." : item.course}
-          </Text>
+          <Text style={[styles.course, styles.middle_font]}>{item.course}</Text>
           <Text style={[styles.grade, styles.large_font]}>
             成绩：
             {item.grade}

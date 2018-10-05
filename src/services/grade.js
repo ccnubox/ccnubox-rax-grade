@@ -16,7 +16,7 @@ const GradeService = {
   getGradeListFromCache(xnm, xqm, sid) {
     return request({
       method: "GET",
-      url: "https://ccnubox.muxixyz.com/api/grade/?xnm=" + xnm + "&xqm=" + xqm,
+      url: "https://ccnubox.muxixyz.com/api/grade/cache/?xnm=" + xnm + "&xqm=" + xqm,
       headers: {
         'Sid': sid,
         'Authorization': "Basic foobar"

@@ -66,11 +66,11 @@ class Result extends Component {
                 "null"
               );
             })
-            .catch(() => {
+            .catch((e) => {
               native.reportInsightApiEvent(
                 "getGradeFromServer",
                 "error",
-                e.code
+                JSON.stringify(e)
               );
               native.changeLoadingStatus(true);
               weexAlert(errMessage).then(res => {
@@ -78,7 +78,6 @@ class Result extends Component {
               });
             });
         } else if (res.code === "401") {
-          native.reportInsightApiEvent("getCookieForTable", "error", "401");
           native.logout();
           native.back();
           alert("学号或密码错误，请检查是否修改了 one.ccnu.edu.cn 的密码");
@@ -101,7 +100,7 @@ class Result extends Component {
               native.reportInsightApiEvent(
                 "getGradeFromServerCache",
                 "error",
-                e.code
+                JSON.stringify(e)
               );
               native.changeLoadingStatus(true);
               weexAlert(errMessage).then(res => {

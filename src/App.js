@@ -3,103 +3,15 @@ import View from "rax-view";
 import Text from "rax-text";
 import styles from "./App.css";
 import Touchable from "rax-touchable";
-import Animated from "rax-animated";
 import Button from "rax-button";
 import Image from "rax-image";
 import ScrollView from "rax-scrollview";
 const native = require("@weex-module/test");
+
+import { confirm } from "./box-ui/common/modal";
 import { parseSearchString } from "./box-ui/util";
 import Notification from "./box-ui/common/notification";
-
-const { View: AnimatedView } = Animated;
-
-class Dropdown extends Component {
-  constructor(props) {
-    super(props);
-    this.fadeAnim = new Animated.Value(0);
-  }
-
-  static propTypes = {
-    onHide: PropTypes.func,
-    onShow: PropTypes.func,
-    visible: PropTypes.bool
-  };
-
-  static defaultProps = {
-    visible: false
-  };
-
-  state = {
-    visible: false
-  };
-
-  animated(state, callback) {
-    const { visible, value } = state;
-    Animated.timing(this.fadeAnim, { toValue: visible === true ? 1 : 0 }).start(
-      callback
-    );
-  }
-
-  show() {
-    const currentState = { visible: true };
-    this.setState(currentState, () =>
-      this.animated(
-        currentState,
-        () => this.props.onShow && this.props.onShow(currentState)
-      )
-    );
-  }
-
-  hide() {
-    this.setState({
-      visible: false
-    });
-  }
-
-  toggle(visible) {
-    if (visible) {
-      this.show();
-    } else {
-      this.hide();
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (
-      nextProps.visible != this.props.visible &&
-      nextProps.visible != this.state.visible
-    ) {
-      this.toggle(nextProps.visible);
-    }
-  }
-
-  componentWillMount() {
-    this.setState({
-      visible: this.props.visible
-    });
-  }
-
-  componentDidMount() {
-    this.animated(this.state);
-  }
-
-  render() {
-    const { children } = this.props;
-    const { visible } = this.state;
-    return (
-      visible && (
-        <AnimatedView
-          onClick={() => {
-            this.hide();
-          }}
-          style={styles.center}
-        >
-          <Touchable>{children}</Touchable>
-        </AnimatedView>
-      )
-    );
-  }
-}
+import Dropdown from "./box-ui/common/dropdown-list";
 
 let qd;
 if (window.location.search) {
@@ -135,23 +47,12 @@ class App extends Component {
       value: year,
       showsVerticalScrollIndicator: false,
       chooseTerm: { value: 3, text: "第一学期" },
-      termOnblur: false,
       YearOptions: []
     };
   }
 
   showTermModal = () => {
-    if (this.refs.termModal.state.visible) {
-      this.setState({
-        termOnblur: false
-      });
-      this.refs.termModal.hide();
-    } else {
-      this.setState({
-        termOnblur: true
-      });
-      this.refs.termModal.show();
-    }
+    this.refs.termModal.show();
   };
 
   hideTermModal = index => {
@@ -159,20 +60,13 @@ class App extends Component {
       chooseTerm: {
         value: this.TermOptions[index].value,
         text: this.TermOptions[index].text
-      },
-      termOnblur: false
+      }
     });
     this.refs.termModal.hide();
   };
 
   showYearModal = () => {
-    if (!this.state.termOnblur) {
-      if (this.refs.yearModal.state.visible) {
-        this.refs.yearModal.hide();
-      } else {
-        this.refs.yearModal.show();
-      }
-    }
+    this.refs.yearModal.show();
   };
 
   hideYearModal = year => {
@@ -194,117 +88,117 @@ class App extends Component {
     });
   }
 
-  pressApp = () => {
-    this.refs.yearModal.hide();
-    this.refs.termModal.hide();
-    this.setState({
-      termOnblur: false
-    });
-  };
-
   navToResult = () => {
     const { value, chooseTerm } = this.state;
-    native.push(
-      `ccnubox://grade.result?xnm=${value}&xqm=${chooseTerm.value}&sid=${id}`
-    );
+    if (id[4] !== "2") {
+      confirm(
+        "检测到您的学号可能不是本科生学号，目前仅支持本科生成绩查询，是否继续查询？"
+      ).then(() => {
+        native.push(
+          `ccnubox://grade.result?xnm=${value}&xqm=${
+            chooseTerm.value
+          }&sid=${id}`
+        );
+      });
+    } else {
+      native.push(
+        `ccnubox://grade.result?xnm=${value}&xqm=${chooseTerm.value}&sid=${id}`
+      );
+    }
   };
 
   render() {
     return (
-      <Touchable onPress={this.pressApp} style={styles.app}>
-       <Notification style={styles.notification} pageId="com.muxistudio.grade.main"/>
+      <View style={styles.app}>
+        <Notification
+          style={styles.notification}
+          pageId="com.muxistudio.grade.main"
+        />
         <View>
           <Button
             style={[styles.choose_box, styles.bottom_box]}
             onPress={this.navToResult}
           >
-            <Text style={styles.white_text}> 查询</Text>
+            <Text style={styles.white_text}>查询</Text>
           </Button>
-          <View>
-            <Touchable
-              onPress={this.showTermModal}
-              style={[styles.choose_box, styles.middle_box]}
-            >
-              <Text>{this.state.chooseTerm.text}</Text>
-              <Touchable onPress={this.showTermModal}>
-                <Image
-                  style={styles.down}
-                  source={require("./assets/triangle_down.png")}
-                  resizeMode="cover"
-                />
-              </Touchable>
-            </Touchable>
-            <View style={styles.term_list}>
-              <Dropdown ref="termModal">
-                <Image
-                  style={styles.second_triangle_up}
-                  source={require("./assets/triangle_up.png")}
-                  resizeMode="cover"
-                />
-                <View style={styles.dropdown_list}>
-                  {this.TermOptions.map(i => {
-                    return (
-                      <View
-                        style={styles.select_item}
-                        onClick={() => {
-                          this.hideTermModal(this.TermOptions.indexOf(i));
-                        }}
-                      >
-                        <Text style={styles.item_text}>{i.text}</Text>
-                      </View>
-                    );
-                  })}
-                </View>
-              </Dropdown>
+
+          <Touchable
+            onPress={this.showTermModal}
+            style={[styles.choose_box, styles.middle_box]}
+          >
+            <Text>{this.state.chooseTerm.text}</Text>
+            <Image
+              style={styles.down}
+              source={require("./assets/triangle_down.png")}
+              resizeMode="cover"
+            />
+          </Touchable>
+
+          <Dropdown ref="termModal" top={445}>
+            <Image
+              style={styles.second_triangle_up}
+              source={require("./assets/triangle_up.png")}
+              resizeMode="cover"
+            />
+            <View style={styles.dropdown_list}>
+              {this.TermOptions.map(i => {
+                return (
+                  <View
+                    style={styles.select_item}
+                    onClick={() => {
+                      this.hideTermModal(this.TermOptions.indexOf(i));
+                    }}
+                  >
+                    <Text style={styles.item_text}>{i.text}</Text>
+                  </View>
+                );
+              })}
             </View>
-          </View>
-          <View>
-            <Touchable
-              onPress={this.showYearModal}
-              style={[styles.choose_box, styles.top_box]}
+          </Dropdown>
+
+          <Touchable
+            onPress={this.showYearModal}
+            style={[styles.choose_box, styles.top_box]}
+          >
+            <Text>
+              {this.state.value}-{this.state.value + 1} 学年
+            </Text>
+            <Image
+              style={styles.down}
+              source={require("./assets/triangle_down.png")}
+              resizeMode="cover"
+            />
+          </Touchable>
+          <Dropdown ref="yearModal" top={305}>
+            <Image
+              style={styles.first_triangle_up}
+              source={require("./assets/triangle_up.png")}
+              resizeMode="cover"
+            />
+            <ScrollView
+              ref={scrollView => {
+                this.scrollView = scrollView;
+              }}
+              style={styles.dropdown_list}
             >
-              <Text>
-                {this.state.value}-{this.state.value + 1} 学年
-              </Text>
-              <Image
-                style={styles.down}
-                source={require("./assets/triangle_down.png")}
-                resizeMode="cover"
-              />
-            </Touchable>
-            <View style={styles.dropdown_container}>
-              <Dropdown ref="yearModal">
-                <Image
-                  style={styles.first_triangle_up}
-                  source={require("./assets/triangle_up.png")}
-                  resizeMode="cover"
-                />
-                <ScrollView
-                  ref={scrollView => {
-                    this.scrollView = scrollView;
-                  }}
-                  style={styles.dropdown_list}
-                >
-                  {this.state.YearOptions.map(i => {
-                    return (
-                      <View
-                        style={styles.select_item}
-                        onClick={() => {
-                          this.hideYearModal(i);
-                        }}
-                      >
-                        <Text style={styles.item_text}>
-                          {i}-{i + 1} 学年
-                        </Text>
-                      </View>
-                    );
-                  })}
-                </ScrollView>
-              </Dropdown>
-            </View>
-          </View>
+              {this.state.YearOptions.map(i => {
+                return (
+                  <View
+                    style={styles.select_item}
+                    onClick={() => {
+                      this.hideYearModal(i);
+                    }}
+                  >
+                    <Text style={styles.item_text}>
+                      {i}-{i + 1} 学年
+                    </Text>
+                  </View>
+                );
+              })}
+            </ScrollView>
+          </Dropdown>
         </View>
-      </Touchable>
+      </View>
     );
   }
 }

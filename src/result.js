@@ -33,6 +33,7 @@ class Result extends Component {
     const xnm = qd.xnm[0];
     const xqm = qd.xqm[0];
     const sid = qd.sid[0];
+    const pwd = qd.pwd[0];
 
     native.getGrade(xnm, xqm, res => {
       if (res.code === "200") {
@@ -53,27 +54,40 @@ class Result extends Component {
         let errMessage = res.data;
         // 错误，请求兜底数据
         if (res.code === "501") {
-          // 501 表示登录成功但获取成绩失败，用 cookie + 服务端请求方式获取
-          GradeService.getGradeList(xnm, xqm, res.cookieJ, res.cookieB, sid)
+          // 501 表示登录成功但获取成绩失败，采用服务端请求方式获取
+          GradeService.getGradeFromServerV2(xnm, xqm, sid, pwd)
             .then(res => {
-              this.setState({
-                data: res
-              });
-              native.changeLoadingStatus(true);
-              native.reportInsightApiEvent(
-                "getGradeFromServer",
-                "success",
-                "null"
-              );
+              if (res.code === 20101) {
+                native.logout();
+                native.back();
+                native.reportInsightApiEvent(
+                  "getGradeFromServer",
+                  "error",
+                  res.code + ",Sid: " + sid
+                );
+                alert(
+                  "学号或密码错误，请检查是否修改了 one.ccnu.edu.cn 的密码"
+                );
+              } else {
+                this.setState({
+                  data: res.data
+                });
+                native.changeLoadingStatus(true);
+                native.reportInsightApiEvent(
+                  "getGradeFromServer",
+                  "success",
+                  "null"
+                );
+              }
             })
-            .catch((e) => {
+            .catch(e => {
               native.reportInsightApiEvent(
                 "getGradeFromServer",
                 "error",
                 JSON.stringify(e)
               );
               native.changeLoadingStatus(true);
-              weexAlert(errMessage).then(res => {
+              weexAlert(JSON.stringify(e)).then(res => {
                 native.back();
               });
             });
@@ -82,31 +96,33 @@ class Result extends Component {
           native.back();
           alert("学号或密码错误，请检查是否修改了 one.ccnu.edu.cn 的密码");
         } else {
+          // 缓存方案开发中
+          native.changeLoadingStatus(true);
+          weexAlert(errMessage).then(res => {
+            native.back();
+          });
           // 其他错误，说明登录失败，请求缓存作为兜底
-          GradeService.getGradeListFromCache(xnm, xqm, sid)
-            .then(res => {
-              const data = JSON.parse(res.val.data);
-              this.setState({
-                data
-              });
-              native.changeLoadingStatus(true);
-              native.reportInsightApiEvent(
-                "getGradeFromServerCache",
-                "success",
-                "null"
-              );
-            })
-            .catch(e => {
-              native.reportInsightApiEvent(
-                "getGradeFromServerCache",
-                "error",
-                JSON.stringify(e)
-              );
-              native.changeLoadingStatus(true);
-              weexAlert(errMessage).then(res => {
-                native.back();
-              });
-            });
+          // GradeService.getGradeListFromCache(xnm, xqm, sid)
+          //   .then(res => {
+          //     const data = JSON.parse(res.val.data);
+          //     this.setState({
+          //       data
+          //     });
+          //     native.changeLoadingStatus(true);
+          //     native.reportInsightApiEvent(
+          //       "getGradeFromServerCache",
+          //       "success",
+          //       "null"
+          //     );
+          //   })
+          //   .catch(e => {
+          //     native.reportInsightApiEvent(
+          //       "getGradeFromServerCache",
+          //       "error",
+          //       JSON.stringify(e)
+          //     );
+
+          //   });
         }
       }
     });

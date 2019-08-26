@@ -23,6 +23,7 @@ if (!qd) {
 }
 
 const id = qd.sid[0];
+const pwd = qd.pwd[0];
 const year = parseInt(id.substr(0, 4));
 
 class App extends Component {
@@ -97,12 +98,14 @@ class App extends Component {
         native.push(
           `ccnubox://grade.result?xnm=${value}&xqm=${
             chooseTerm.value
-          }&sid=${id}`
+          }&sid=${id}&pwd=${encodeURIComponent(pwd)}`
         );
       });
     } else {
       native.push(
-        `ccnubox://grade.result?xnm=${value}&xqm=${chooseTerm.value}&sid=${id}`
+        `ccnubox://grade.result?xnm=${value}&xqm=${
+          chooseTerm.value
+        }&sid=${id}&pwd=${pwd}`
       );
     }
   };

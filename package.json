@@ -1,7 +1,7 @@
 {
   "name": "ccnubox-rax-grade",
   "author": "muxi-mfe",
-  "version": "2.0.0-rc2",
+  "version": "2.1.0",
   "scripts": {
     "start": "rax-scripts start",
     "build": "rax-scripts build",

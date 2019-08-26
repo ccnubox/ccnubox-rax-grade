@@ -58,8 +58,7 @@ class Result extends Component {
           GradeService.getGradeFromServerV2(xnm, xqm, sid, pwd)
             .then(res => {
               if (res.code === 20101) {
-                native.logout();
-                native.back();
+                native.logout("");
                 native.reportInsightApiEvent(
                   "getGradeFromServer",
                   "error",
@@ -68,6 +67,7 @@ class Result extends Component {
                 alert(
                   "学号或密码错误，请检查是否修改了 one.ccnu.edu.cn 的密码"
                 );
+                native.backToRoot();
               } else {
                 this.setState({
                   data: res.data

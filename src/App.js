@@ -105,7 +105,7 @@ class App extends Component {
       native.push(
         `ccnubox://grade.result?xnm=${value}&xqm=${
           chooseTerm.value
-        }&sid=${id}&pwd=${pwd}`
+        }&sid=${id}&pwd=${encodeURIComponent(pwd)}`
       );
     }
   };
